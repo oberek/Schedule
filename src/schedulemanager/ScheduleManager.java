@@ -1,7 +1,7 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * and openDB the template in the editor.
  */
 package schedulemanager;
 
@@ -26,7 +26,7 @@ public class ScheduleManager extends Application {
     public static PreparedStatement preparedStatement;
 
     private static void openDB() {  
-       DBManager.open();
+       DBManager.openDB();
        connection = DBManager.getConnection();
     }
 

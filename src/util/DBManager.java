@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
 public class DBManager {
     public static final String DB_NAME = "U04oOs";
     public static final String DRIVER_URL = "com.mysql.jdbc.Driver";
@@ -23,7 +24,7 @@ public class DBManager {
         return conn;
     }
 
-    public static boolean open() {
+    public static boolean openDB() {
 //    Connection String
 //    Server name: 52.206.157.109
 //    Database name: U04oOs
@@ -47,7 +48,7 @@ public class DBManager {
 
     }
 
-    public void close() {
+    public void closeDB() {
         try {
             if (conn != null) {
                 conn.close();
