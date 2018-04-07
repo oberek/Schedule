@@ -24,9 +24,9 @@
       <Label layoutX="510.0" layoutY="29.0" text="Appointments" />
       <HBox layoutX="510.0" layoutY="59.0" spacing="15.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="New" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Update" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
+            <Button fx:id="btnAddAppointment" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Add" />
+            <Button fx:id="btnUpdateAppointment" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Update" />
+            <Button fx:id="btnDeleteAppointment" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
          </children>
       </HBox>
       <RadioButton fx:id="monthViewRadio" layoutX="922.0" layoutY="461.0" mnemonicParsing="false" selected="true" text="Month View" />
@@ -44,9 +44,9 @@
       </TableView>
       <HBox layoutX="37.0" layoutY="59.0" spacing="15.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#newCustomerButtonPressed" prefHeight="25.0" prefWidth="61.0" text="New" />
-            <Button mnemonicParsing="false" onAction="#updateCustomerButtonPressed" prefHeight="25.0" prefWidth="61.0" text="Update" />
-            <Button mnemonicParsing="false" onAction="#deleteCustomerButtonPressed" prefHeight="25.0" prefWidth="64.0" text="Delete" />
+            <Button fx:id="btnAddCustomer" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Add" />
+            <Button fx:id="btnUpdateCustomer" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Update" />
+            <Button fx:id="btnDeleteCustomer" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
          </children>
       </HBox>
       <Label layoutX="37.0" layoutY="29.0" text="Customers" />

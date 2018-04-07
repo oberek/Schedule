@@ -11,18 +11,25 @@ package model;
  */
 public class Customer {
 
-   private String customerId;
-   private String customerName;
-   private String address;
-   private String address2;
-   private City city;
-   private String country;
-   private String zipCode;
-   private String phone;
-   
-   public Customer() {
-       
-   }
+    private String customerId;
+    private String customerName;
+    private String address;
+    private String address2;
+    private City city;
+    private String country;
+    private String zipCode;
+    private String phone;
+
+    public Customer() {
+
+    }
+
+    public Customer(String customerName, String address, City city, String phone) {
+        this.customerName = customerName;
+        this.address = address;
+        this.city = city;
+        this.phone = phone;
+    }
 
     public Customer(String customerId, String customerName, String address, String address2, City city, String country, String zipCode, String phone) {
         this.customerId = customerId;
@@ -98,12 +105,5 @@ public class Customer {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    
-    
-   
-   
-
-
-    
 
 }

@@ -78,7 +78,7 @@ public class ScheduleManager extends Application {
 
     public void initRootLayout() {
         try {
-            rootLayout = FXMLLoader.load(ScheduleManager.class.getResource("/view_controller/Login.fxml"));
+            rootLayout = FXMLLoader.load(ScheduleManager.class.getResource("/view_controller/Main.fxml"));
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
