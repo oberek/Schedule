@@ -2,11 +2,14 @@ package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.Objects;
 
 public class DBManager {
+
     public static final String DB_NAME = "U04oOs";
     public static final String DRIVER_URL = "com.mysql.jdbc.Driver";
     private static final String ALLOW_MULTI_QUERIES = "?allowMultiQueries=true";
@@ -19,7 +22,7 @@ public class DBManager {
     private DBManager() {
 
     }
-    
+
     public static Connection getConnection() {
         return conn;
     }
@@ -58,4 +61,24 @@ public class DBManager {
             e.printStackTrace();
         }
     }
+
+    public static boolean isLoginValid(String userName, String password) {
+        try {
+            String query = "SELECT password FROM user WHERE userName = ?";//this is the query with a ? SQL placeholder
+            PreparedStatement statement = conn.prepareStatement(query);//this preps the application to execute a SQLQuery
+            statement.setString(1, userName);//this sets up a holder for the JDBC data
+            try (ResultSet results = statement.executeQuery()) {//this starts the query
+                if (results.next()) {//moves from row to row using the next line for the column
+                    return Objects.equals(password, results.getString("password"));//gets the column name
+                } else {
+                    System.out.println(userName + " doesn't exist.");
+                    return false;
+                }
+            }
+        } catch (SQLException e){
+            return false;
+        }
+    }
+    
+   
 }

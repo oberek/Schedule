@@ -12,7 +12,8 @@
    <children>
       <TableView fx:id="appointmentsTableView" layoutX="510.0" layoutY="96.0" prefHeight="355.0" prefWidth="565.0">
         <columns>
-          <TableColumn fx:id="appointmentNameColumn" prefWidth="75.0" text="Name" />
+            <TableColumn fx:id="appointmentCustIdColumn" prefWidth="75.0" text="Customer Name" />
+          <TableColumn fx:id="appointmentNameColumn" prefWidth="75.0" text="Description" />
           <TableColumn fx:id="appointmentDateColumn" prefWidth="75.0" text="Date" />
             <TableColumn fx:id="appointmentTimeColumn" prefWidth="75.0" text="Time" />
         </columns>
@@ -23,9 +24,9 @@
       <Label layoutX="510.0" layoutY="29.0" text="Appointments" />
       <HBox layoutX="510.0" layoutY="59.0" spacing="15.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#newAppointmentButtonPressed" prefHeight="25.0" prefWidth="61.0" text="New" />
-            <Button mnemonicParsing="false" onAction="#updateAppointmentButtonPressed" prefHeight="25.0" prefWidth="61.0" text="Update" />
-            <Button mnemonicParsing="false" onAction="#deleteAppointmentButtonPressed" prefHeight="25.0" prefWidth="64.0" text="Delete" />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="New" />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Update" />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
          </children>
       </HBox>
       <RadioButton fx:id="monthViewRadio" layoutX="922.0" layoutY="461.0" mnemonicParsing="false" selected="true" text="Month View" />

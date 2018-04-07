@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import util.DBManager;
 
 /**
  * FXML Controller class
@@ -31,7 +32,9 @@ import javafx.stage.Stage;
  * @author mcken
  */
 public class LoginController implements Initializable {
-    
+
+    private DBManager dbManager;
+
     @FXML
     private TextField usernameTextField;
     @FXML
@@ -49,7 +52,6 @@ public class LoginController implements Initializable {
     @FXML
     Label loginLabel;
 
-    
     private String englishLocale = "resources/en_EN";
     private String frenchLocale = "resources/fr_FR";
 
@@ -64,27 +66,17 @@ public class LoginController implements Initializable {
     private void setLanguage() {
 //    TODO: figure out how to correctly path to the langauge files.
         ResourceBundle rb = ResourceBundle.getBundle(englishLocale, Locale.getDefault());
-        
+
         loginLabel.setText(rb.getString("login_label"));
         usernameLabel.setText(rb.getString("username_label"));
         passwordLabel.setText(rb.getString("password_label"));
         submitButton.setText(rb.getString("submit_button_label"));
         exitButton.setText(rb.getString("exit_button_label"));
     }
+
     @FXML
     public void submitButtonPressed(ActionEvent event) throws IOException {
-        if (!isLoginValid()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            //TODO: figure out how to correctly path to the langauge files.
-            alert.setTitle(java.util.ResourceBundle.getBundle(englishLocale).getString("invalid_entry"));
-            alert.setHeaderText(java.util.ResourceBundle.getBundle(englishLocale).getString("password_username_mismatch"));
-//            alert.setTitle("invalid entry");
-//            alert.setHeaderText("password and username do not match");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                alert.close();
-            }
-        } else {
+        if (DBManager.isLoginValid(usernameTextField.getText(), passwordTextField.getText())) {
             try {
                 // Show main screen
                 Parent mainScreenParent = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -95,22 +87,20 @@ public class LoginController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-    
-    private boolean isLoginValid() {
-        String userName = usernameTextField.getText();
-        String password = passwordTextField.getText();
-        boolean isValid = false;
-        
-        if (userName.equals("test") && password.equals("test")) {
-            isValid = true;
         } else {
-            isValid = false;
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            //TODO: figure out how to correctly path to the langauge files.
+            alert.setTitle(java.util.ResourceBundle.getBundle(englishLocale).getString("invalid_entry"));
+            alert.setHeaderText(java.util.ResourceBundle.getBundle(englishLocale).getString("password_username_mismatch"));
+//            alert.setTitle("invalid entry");
+//            alert.setHeaderText("password and username do not match");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                alert.close();
+            }
         }
-        return isValid;
     }
-    
+
     @FXML
     public void exitButtonPressed(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -123,5 +113,5 @@ public class LoginController implements Initializable {
             alert.close();
         }
     }
-    
+
 }
