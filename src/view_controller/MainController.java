@@ -115,7 +115,8 @@ public class MainController implements Initializable {
     private List<Customer> parseCustomerList() {
         String custName;
         String custAddress;
-        String custCity = City.getCityName();
+        String custCity;
+        int custCityId;
         String custPhone;
         
         ArrayList<Customer> custList = new ArrayList();
@@ -133,12 +134,16 @@ public class MainController implements Initializable {
                 custName = rs.getString("customer.customerName");
                 custAddress = rs.getString("address.address");
                 custCity = rs.getString("city.city");
+                custCityId = rs.getInt("city.cityId");
+                        
                 custPhone = rs.getString("address.phone");
-                custList.add(new Customer(custName, custAddress, cityName, custPhone));
+                custList.add(new Customer(custName, custAddress, new City(custCityId, custCity), custPhone));
             }
             
         } catch (SQLException e) {
             System.out.println("SQL cust query error: " + e.getMessage());
+        } catch (Exception e2) {
+            System.out.println("Something besides the SQL went wrong." + e2.getMessage());
         }
         return custList;
     }
