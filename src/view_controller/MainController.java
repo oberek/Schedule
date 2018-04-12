@@ -50,7 +50,7 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Customer, String> customerAddressColumn;
     @FXML
-    private TableColumn<Customer, String> customerCityColumn;
+    private TableColumn<Customer, City> customerCityColumn;
     @FXML
     private TableColumn<Customer, String> customerPhoneColumn;
 
@@ -85,9 +85,6 @@ public class MainController implements Initializable {
     @FXML
     private Button btnDeleteCustomer;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -97,7 +94,7 @@ public class MainController implements Initializable {
         customerCityColumn.setCellValueFactory(new PropertyValueFactory<>("city"));
         customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         
-        customerTableView.getItems().setAll(parseCustomerList());
+//        customerTableView.getItems().setAll(parseCustomerList());
         
         
         btnAddCustomer.setOnAction(event -> addCustomerButtonPressed(event));
@@ -112,6 +109,9 @@ public class MainController implements Initializable {
         this.weekViewRadio.setToggleGroup(calendarViewToggleGroup);
     }
     
+//    REQ B.  Provide the ability to add, update, and delete customer records in the database, including name, address, and phone number.
+    //TODO: Fix null poiner exception
+  
     private List<Customer> parseCustomerList() {
         String custName;
         String custAddress;
@@ -147,11 +147,49 @@ public class MainController implements Initializable {
         }
         return custList;
     }
+    
+//    REQ C.  Provide the ability to add, update, and delete appointments, capturing the type of appointment and a link to the specific customer record in the database.
+//    private List<Appointment> parseAppointmentList() {
+//        String custName;
+//        String custAddress;
+//        String custCity;
+//        int custCityId;
+//        String custPhone;
+//        
+//        ArrayList<Customer> custList = new ArrayList();
+//        try(PreparedStatement statement = DBManager.getConnection().prepareStatement(
+//                "SELECT customer.customerName, " +
+//                "address.address, address.postalCode, address.phone, " +
+//                "city.city," +
+//                "country.country " +
+//                "FROM customer " +
+//                "JOIN address ON customer.addressId = address.addressid " +
+//                "JOIN city ON address.cityId = city.cityid " +
+//                "JOIN country ON city.countryId = country.countryId");
+//                ResultSet rs = statement.executeQuery();) {
+//            while (rs.next()) {
+//                custName = rs.getString("customer.customerName");
+//                custAddress = rs.getString("address.address");
+//                custCity = rs.getString("city.city");
+//                custCityId = rs.getInt("city.cityId");
+//                        
+//                custPhone = rs.getString("address.phone");
+//                custList.add(new Customer(custName, custAddress, new City(custCityId, custCity), custPhone));
+//            }
+//            
+//        } catch (SQLException e) {
+//            System.out.println("SQL cust query error: " + e.getMessage());
+//        } catch (Exception e2) {
+//            System.out.println("Something besides the SQL went wrong." + e2.getMessage());
+//        }
+//        return custList;
+//    }
+    
 
     @FXML
     private void addAppointmentButtonPressed(ActionEvent event) {
         try {
-            Parent addAppointmentParent = FXMLLoader.load(getClass().getResource("Customer.fxml"));
+            Parent addAppointmentParent = FXMLLoader.load(getClass().getResource("Appointment.fxml"));
             Scene addAppointmentScene = new Scene(addAppointmentParent);
             Stage addAppointmentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             addAppointmentStage.setScene(addAppointmentScene);
@@ -165,7 +203,7 @@ public class MainController implements Initializable {
     private void updateAppointmentButtonPressed(ActionEvent event) {
         Parent tableViewParent = null;
         try {
-            tableViewParent = FXMLLoader.load(getClass().getResource("Customer.fxml"));
+            tableViewParent = FXMLLoader.load(getClass().getResource("Appointment.fxml"));
         } catch (IOException e) {
             return;
         }

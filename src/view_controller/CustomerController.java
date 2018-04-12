@@ -19,11 +19,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author mcken
- */
 public class CustomerController implements Initializable {
 
     @FXML
@@ -41,9 +36,6 @@ public class CustomerController implements Initializable {
     @FXML
     private TextField phoneTextField;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnSave.setOnAction(event -> saveButtonPressed(event));
@@ -75,5 +67,13 @@ public class CustomerController implements Initializable {
         window.setScene(tableViewScene);
         window.show();
     }
+    
+//    TODO: City cannot be converted to type String
+//    private void portCustomerInformation(Customer selectedCustomer) {
+//        nameTextField.setText(selectedCustomer.getCustomerName());
+//        addressTextField.setText(selectedCustomer.getAddress());
+//        cityTextField.setText(selectedCustomer.getCity());
+//        phoneTextField.setText(selectedCustomer.getPhone());
+//    }
 
 }

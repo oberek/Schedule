@@ -36,7 +36,7 @@ public class DBManager {
         try {
             Class.forName(DRIVER_URL);
             conn = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, DB_PASSWORD);
-            System.out.println("Connected to database: " + DB_NAME);
+            System.out.println("ALL SYSTEMS ARE A GO, EAGLE 1. Connection in 3...2....1...WE'RE IN: " + DB_NAME);
             return true;
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
@@ -57,7 +57,7 @@ public class DBManager {
                 conn.close();
             }
         } catch (SQLException e) {
-            System.out.println("Well this is awkward. Couldn't close connection... " + e.getMessage());
+            System.out.println("Like an awkward Tinder date, we just couldn't close connection... " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -71,7 +71,7 @@ public class DBManager {
                 if (results.next()) {//moves from row to row using the next line for the column
                     return Objects.equals(password, results.getString("password"));//gets the column name
                 } else {
-                    System.out.println(userName + " doesn't exist.");
+                    System.out.println("This user name doesn't exist, but what does it mean to exist, really?");
                     return false;
                 }
             }

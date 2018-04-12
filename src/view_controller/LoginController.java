@@ -55,9 +55,8 @@ public class LoginController implements Initializable {
     private String englishLocale = "resources/en_EN";
     private String frenchLocale = "resources/fr_FR";
 
-    /**
-     * Initializes the controller class.
-     */
+//    REQ A.  Create a log-in form that can determine the user’s location and translate log-in and error control messages (e.g., “The username and password did not match.”) into two languages.
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setLanguage();
@@ -92,8 +91,6 @@ public class LoginController implements Initializable {
             //TODO: figure out how to correctly path to the langauge files.
             alert.setTitle(java.util.ResourceBundle.getBundle(englishLocale).getString("invalid_entry"));
             alert.setHeaderText(java.util.ResourceBundle.getBundle(englishLocale).getString("password_username_mismatch"));
-//            alert.setTitle("invalid entry");
-//            alert.setHeaderText("password and username do not match");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 alert.close();
