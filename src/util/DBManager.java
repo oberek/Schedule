@@ -81,5 +81,24 @@ public class DBManager {
     }
     
     
+    public boolean hasUpcomingAppointment() {
+        try{
+            String query = ""; //TODO: <- figure how to write an if statement
+                    //that finds the system time + 15 minutes and sets an alert
+                    //if there is an appointment withing 15 minutes
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.executeQuery();
+            
+//            if(/* There is a true statement from the SQL query */){
+//                return hasUpcomingAppointment();
+//            }
+            
+        } catch (SQLException e){
+           e.printStackTrace();
+        }
+        
+        return false;
+    }
+    
    
 }
