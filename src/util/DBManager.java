@@ -36,7 +36,7 @@ public class DBManager {
         try {
             Class.forName(DRIVER_URL);
             conn = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, DB_PASSWORD);
-            System.out.println("ALL SYSTEMS ARE A GO, EAGLE 1. Connection in 3...2....1...WE'RE IN: " + DB_NAME);
+            System.out.println("Connection established: " + DB_NAME);
             return true;
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
@@ -57,7 +57,7 @@ public class DBManager {
                 conn.close();
             }
         } catch (SQLException e) {
-            System.out.println("Like an awkward Tinder date, we just couldn't close connection... " + e.getMessage());
+            System.out.println("Couldn't close the connection: " + e.getMessage());
             e.printStackTrace();
         }
     }

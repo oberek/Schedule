@@ -5,12 +5,16 @@
  */
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  *
  * @author mcken
  */
 public class Appointment {
-    
+
+    private ObservableList<Customer> associatedCustomers = FXCollections.observableArrayList();
     private String appointmentId;
     private Customer customer;
     private String title;
@@ -18,15 +22,15 @@ public class Appointment {
     private String start;
     private String end;
     private String user;
-    
+
     public Appointment() {
-        
+
     }
-    
+
     public Appointment(String appointmentId) {
         this.appointmentId = appointmentId;
     }
-    
+
     public Appointment(String start, String end, String user) {
         this.start = start;
         this.end = end;
@@ -41,6 +45,22 @@ public class Appointment {
         this.start = start;
         this.end = end;
         this.user = user;
+    }
+
+    public ObservableList<Customer> getAssociatedCustomers() {
+        return associatedCustomers;
+    }
+
+    public void setAssociatedCustomers(ObservableList<Customer> associatedCustomers) {
+        this.associatedCustomers = associatedCustomers;
+    }
+
+    public void addAssociatedCustomer(Customer customer) {
+        associatedCustomers.add(customer);
+    }
+
+    public int getAssociatedCustomersCount() {
+        return associatedCustomers.size();
     }
 
     public String getAppointmentId() {
@@ -100,5 +120,5 @@ public class Appointment {
     }
     
     
-    
+
 }

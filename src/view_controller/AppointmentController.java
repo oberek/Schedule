@@ -94,7 +94,7 @@ public class AppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        btnSave.setOnAction(event -> saveButtonPressed(event));
+//        btnSave.setOnAction(event -> saveButtonPressed(event));
         btnCancel.setOnAction(event -> cancelButtonPressed(event));
         //TODO: initialize combobox to take 15 minute intervals with Local time
         LocalTime time1 = LocalTime.of(8, 0);
@@ -149,6 +149,11 @@ public class AppointmentController implements Initializable {
 //            } catch (SQLException e) {
 //                System.out.println("SQL query error: " + e.getMessage());
 //            }
+            Appointment newAppt = new Appointment();
+            for (Customer c : customerData) {
+                newAppt.addAssociatedCustomer(c);
+            }
+
             Parent tableViewParent = null;
             try {
                 tableViewParent = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -224,6 +229,9 @@ public class AppointmentController implements Initializable {
             error += "This scheduled time overlaps with another time.\n "
                     + "Please choose another appointment time.";
         }
+        if (customerData.isEmpty()) {
+            error += "Please add at least one customer to this appointment.\n";
+        }
         //this will try to return an empty string, 
         //and if it can't, then it will return a false 
         //result and give the error code(s)
@@ -235,11 +243,12 @@ public class AppointmentController implements Initializable {
         boolean overlap;
 //        try {
 //            PreparedStatement psTimes = DBManager.getConnection().prepareStatement(
-//                    "SELECT start, end IF(? > start AND ? < end, 1, 0"
-//                    + "FROM appointment");
+//                    "SELECT start, end " +   
+//                    "IF(STR_TO_DATE(start, '%c/%e/%Y %r') > ? OR (STR_TO_DATE(end, '%c/%e/%Y %r') < ?)) "
+//                    + "FROM appointment"); //<---start and end are set up as Strings in the DB???
 //            psTimes.setInt(1, start);
 //            psTimes.setInt(2, end);
-            // TODO: finish query execution
+        // TODO: finish query execution
 //            try (ResultSet results = psTimes.executeQuery()) {
 //                if (results.next()) {
 //                    return //the boolean values given
