@@ -105,7 +105,7 @@ public class MainController implements Initializable {
         customerCityColumn.setCellValueFactory(new PropertyValueFactory<>("city"));
         customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
-//        customerTableView.getItems().setAll(parseCustomerList());
+        customerTableView.getItems().setAll(parseCustomerList());
         btnAddCustomer.setOnAction(event -> addCustomerButtonPressed(event));
         btnUpdateCustomer.setOnAction(event -> updateCustomerButtonPressed(event));
         btnDeleteCustomer.setOnAction(event -> deleteCustomerButtonPressed(event));
@@ -133,7 +133,7 @@ public class MainController implements Initializable {
         try (PreparedStatement statement = DBManager.getConnection().prepareStatement(
                 "SELECT customer.customerName, "
                 + "address.address, address.postalCode, address.phone, "
-                + "city.city,"
+                + "city.city, "
                 + "country.country "
                 + "FROM customer "
                 + "JOIN address ON customer.addressId = address.addressid "
@@ -144,14 +144,14 @@ public class MainController implements Initializable {
                 custName = rs.getString("customer.customerName");
                 custAddress = rs.getString("address.address");
                 custCity = rs.getString("city.city");
-                custCityId = rs.getInt("city.cityId");
 
-                custPhone = rs.getString("address.phone");
-                custList.add(new Customer(custName, custAddress, new City(custCityId, custCity), custPhone));
+                custPhone = rs.getString("phone");
+                custList.add(new Customer(custName, custAddress, new City(custCity), custPhone));
             }
 
         } catch (SQLException e) {
             System.out.println("SQL cust query error: " + e.getMessage());
+            e.printStackTrace();
         } catch (Exception e2) {
             System.out.println("Something besides the SQL went wrong." + e2.getMessage());
         }

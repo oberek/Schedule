@@ -18,8 +18,8 @@ public class City {
         
     }
     
-    public City(int cityId){
-        this.cityId = cityId;
+    public City(String cityName){
+        this.cityName = cityName;
     }
     
     public City(int cityId, String cityName) {
