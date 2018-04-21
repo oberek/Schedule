@@ -11,25 +11,25 @@ package model;
  */
 public class City {
     private int cityId;
-    private String cityName;
+    private String city;
     private int countryId;
     
     public City() {
         
     }
-    
-    public City(String cityName){
-        this.cityName = cityName;
+   
+    public String toString() {
+        return this.city;
     }
     
-    public City(int cityId, String cityName) {
+    public City(int cityId, String city) {
         this.cityId = cityId;
-        this.cityName = cityName;
+        this.city = city;
     }
 
-    public City(int cityId, String cityName, int countryId) {
+    public City(int cityId, String city, int countryId) {
         this.cityId = cityId;
-        this.cityName = cityName;
+        this.city = city;
         this.countryId = countryId;
     }
 
@@ -42,11 +42,11 @@ public class City {
     }
 
     public String getCityName() {
-        return cityName;
+        return city;
     }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    public void setCityName(String city) {
+        this.city = city;
     }
 
     public int getCountryId() {

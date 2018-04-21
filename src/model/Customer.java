@@ -41,6 +41,10 @@ public class Customer {
         this.zipCode = zipCode;
         this.phone = phone;
     }
+    
+    public String getCustomerString(){
+        return this.customerName;
+    }
 
     public String getCustomerId() {
         return customerId;

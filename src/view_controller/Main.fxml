@@ -25,10 +25,10 @@
             </TableView>
             <TableView fx:id="appointmentsTableView" prefHeight="355.0" prefWidth="559.0">
               <columns>
-                  <TableColumn fx:id="appointmentCustIdColumn" prefWidth="75.0" text="Customer Name" />
-                <TableColumn fx:id="appointmentNameColumn" prefWidth="75.0" text="Description" />
+                  <TableColumn fx:id="appointmentCustNameColumn" prefWidth="75.0" text="Customer Name" />
+                <TableColumn fx:id="appointmentDescriptionColumn" prefWidth="75.0" text="Description" />
                 <TableColumn fx:id="appointmentDateColumn" prefWidth="75.0" text="Date" />
-                  <TableColumn fx:id="appointmentTimeColumn" prefWidth="75.0" text="Time" />
+                  <TableColumn fx:id="appointmentTypeColumn" prefWidth="75.0" text="Type" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

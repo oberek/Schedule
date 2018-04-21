@@ -21,6 +21,7 @@ public class Appointment {
     private String description;
     private String start;
     private String end;
+    private String type;
     private String user;
 
     public Appointment() {
@@ -30,20 +31,28 @@ public class Appointment {
     public Appointment(String appointmentId) {
         this.appointmentId = appointmentId;
     }
-
-    public Appointment(String start, String end, String user) {
+    
+    public Appointment(Customer customer, String description, String start){
+        this.customer = customer;
+        this.description = description;
         this.start = start;
-        this.end = end;
-        this.user = user;
+    }
+    
+    public Appointment(Customer customer, String description, String start, String type) {
+        this.customer = customer;
+        this.description = description;
+        this.start = start;
+        this.type = type;
     }
 
-    public Appointment(String appointmentId, Customer customer, String title, String description, String start, String end, String user) {
+    public Appointment(String appointmentId, Customer customer, String title, String description, String start, String end, String type, String user) {
         this.appointmentId = appointmentId;
         this.customer = customer;
         this.title = title;
         this.description = description;
         this.start = start;
         this.end = end;
+        this.type = type;
         this.user = user;
     }
 
@@ -117,6 +126,14 @@ public class Appointment {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
     
     
