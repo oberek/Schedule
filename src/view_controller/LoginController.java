@@ -10,6 +10,9 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import util.DBManager;
@@ -33,7 +32,12 @@ import util.DBManager;
  */
 public class LoginController implements Initializable {
 
+
+    private String englishLocale = "resources/en_EN";
+    private String frenchLocale = "resources/fr_FR";
+
     private DBManager dbManager;
+    ResourceBundle rb = ResourceBundle.getBundle(englishLocale, Locale.getDefault());
 
     @FXML
     private TextField usernameTextField;
@@ -51,9 +55,10 @@ public class LoginController implements Initializable {
     Button exitButton;
     @FXML
     Label loginLabel;
-
-    private String englishLocale = "resources/en_EN";
-    private String frenchLocale = "resources/fr_FR";
+    @FXML
+    RadioButton englishRadioButton;
+    @FXML
+    RadioButton frenchRadioButton;
 
 //    REQ A.  Create a log-in form that can determine the user’s location and translate log-in and error control messages (e.g., “The username and password did not match.”) into two languages.
 
@@ -63,9 +68,26 @@ public class LoginController implements Initializable {
     }
 
     private void setLanguage() {
-//    TODO: figure out how to correctly path to the langauge files.
-        ResourceBundle rb = ResourceBundle.getBundle(englishLocale, Locale.getDefault());
+        ToggleGroup toggleGroup = new ToggleGroup();
 
+        this.englishRadioButton.setToggleGroup(toggleGroup);
+        this.frenchRadioButton.setToggleGroup(toggleGroup);
+        toggleGroup.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
+            if (toggleGroup.getSelectedToggle() != null) {
+                if (toggleGroup.getSelectedToggle().equals(englishRadioButton)) {
+                    rb = ResourceBundle.getBundle(englishLocale, Locale.getDefault());
+                    setText();
+                } else {
+                    rb = ResourceBundle.getBundle(frenchLocale, Locale.getDefault());
+                    setText();
+                }
+            }
+        });
+
+        setText();
+    }
+
+    private void setText() {
         loginLabel.setText(rb.getString("login_label"));
         usernameLabel.setText(rb.getString("username_label"));
         passwordLabel.setText(rb.getString("password_label"));
@@ -89,8 +111,8 @@ public class LoginController implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             //TODO: figure out how to correctly path to the langauge files.
-            alert.setTitle(java.util.ResourceBundle.getBundle(englishLocale).getString("invalid_entry"));
-            alert.setHeaderText(java.util.ResourceBundle.getBundle(englishLocale).getString("password_username_mismatch"));
+            alert.setTitle(rb.getString("invalid_entry"));
+            alert.setHeaderText(rb.getString("password_username_mismatch"));
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 alert.close();
@@ -101,8 +123,8 @@ public class LoginController implements Initializable {
     @FXML
     public void exitButtonPressed(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(java.util.ResourceBundle.getBundle(englishLocale).getString("confirm_exit"));
-        alert.setHeaderText(java.util.ResourceBundle.getBundle(englishLocale).getString("confirm_dialogue"));
+        alert.setTitle(rb.getString("confirm_exit"));
+        alert.setHeaderText(rb.getString("confirm_dialogue"));
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             System.exit(0);
