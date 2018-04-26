@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +24,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -88,6 +93,8 @@ public class MainController implements Initializable {
     private Button btnUpdateCustomer;
     @FXML
     private Button btnDeleteCustomer;
+    @FXML
+    private Button btnReports;
    
     private ObservableList<AppointmentViewModel> appointmentList;
     private DateTimeFormatter dtfTime = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
@@ -115,6 +122,7 @@ public class MainController implements Initializable {
         btnDeleteCustomer.setOnAction(event -> deleteCustomerButtonPressed(event));
         btnAddAppointment.setOnAction(event -> addAppointmentButtonPressed(event));
         btnUpdateAppointment.setOnAction(event -> updateAppointmentButtonPressed(event));
+        btnReports.setOnAction(event -> {reportsButtonPressed(); event.consume();});
 //        btnDeleteAppointment.setOnAction(event -> deleteAppointmentButtonPressed(event));
 
         calendarViewToggleGroup = new ToggleGroup();
@@ -282,6 +290,32 @@ public class MainController implements Initializable {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Could not delete appointment. " + e.getMessage());
+        }
+    }
+    
+    @FXML
+    private void reportsButtonPressed() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Reports Selection");
+        alert.setHeaderText("PLEASE CHOOSE A REPORT");
+        
+        
+        ButtonType buttonOne = new ButtonType("Uno");
+        ButtonType buttonTwo = new ButtonType("dos");
+        ButtonType buttonThree = new ButtonType("tres");
+        ButtonType buttonCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        
+        alert.getButtonTypes().setAll(buttonOne, buttonTwo, buttonThree, buttonCancel);
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == buttonOne){
+            System.out.println("UNNNOOOOOO");
+        } else if(result.get() == buttonTwo){
+            System.out.println("DOOOOOSSS");
+        } else if (result.get() == buttonThree){
+            System.out.println("TRREEEEEFIDDDYY");
+        } else {
+            System.out.println("CANCELCANCELCANCEL");
         }
     }
     

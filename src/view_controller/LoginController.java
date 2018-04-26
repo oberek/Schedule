@@ -51,6 +51,7 @@ public class LoginController implements Initializable {
     Button exitButton;
     @FXML
     Label loginLabel;
+   
 
     private String englishLocale = "resources/en_EN";
     private String frenchLocale = "resources/fr_FR";

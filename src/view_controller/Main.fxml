@@ -54,5 +54,6 @@
          </children>
       </HBox>
       <Label layoutX="37.0" layoutY="29.0" text="Customers" />
+      <Button fx:id="btnReports" layoutX="572.0" layoutY="493.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Reports" />
    </children>
 </AnchorPane>
