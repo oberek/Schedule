@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +24,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -49,6 +54,11 @@ public class MainController implements Initializable {
 
     @FXML
     private TableView<Customer> customerTableView;
+
+    public TableView<Customer> getCustomerTableView() {
+        return customerTableView;
+    }
+
     @FXML
     private TableColumn<Customer, String> customerNameColumn;
     @FXML
@@ -59,7 +69,7 @@ public class MainController implements Initializable {
     private TableColumn<Customer, String> customerPhoneColumn;
 
     @FXML
-    private TableView<AppointmentViewModel> appointmentsTableView;
+    private TableView<AppointmentViewModel> appointmentTableView;
     @FXML
     private TableColumn<AppointmentViewModel, String> appointmentCustNameColumn;
     @FXML
@@ -88,7 +98,9 @@ public class MainController implements Initializable {
     private Button btnUpdateCustomer;
     @FXML
     private Button btnDeleteCustomer;
-   
+    @FXML
+    private Button btnReports;
+
     private ObservableList<AppointmentViewModel> appointmentList;
     private DateTimeFormatter dtfTime = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
 
@@ -102,20 +114,23 @@ public class MainController implements Initializable {
         customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
         customerTableView.getItems().setAll(parseCustomerList());
-        
+
         appointmentCustNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         appointmentDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         appointmentDateColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
         appointmentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-        appointmentsTableView.getItems().setAll(parseAppointmentList());
-        
+        appointmentTableView.getItems().setAll(parseAppointmentList());
+
         btnAddCustomer.setOnAction(event -> addCustomerButtonPressed(event));
         btnUpdateCustomer.setOnAction(event -> updateCustomerButtonPressed(event));
         btnDeleteCustomer.setOnAction(event -> deleteCustomerButtonPressed(event));
         btnAddAppointment.setOnAction(event -> addAppointmentButtonPressed(event));
         btnUpdateAppointment.setOnAction(event -> updateAppointmentButtonPressed(event));
-//        btnDeleteAppointment.setOnAction(event -> deleteAppointmentButtonPressed(event));
+        btnReports.setOnAction(event -> {
+            reportsButtonPressed();
+            event.consume();
+        });
 
         calendarViewToggleGroup = new ToggleGroup();
         RadioButton monthRadio = this.monthViewRadio;
@@ -163,24 +178,25 @@ public class MainController implements Initializable {
     }
 
 //    REQ C.  Provide the ability to add, update, and delete appointments, capturing the type of appointment and a link to the specific customer record in the database.
-    private List<AppointmentViewModel> parseAppointmentList() {      
-        
+    private List<AppointmentViewModel> parseAppointmentList() {
+
         ArrayList<AppointmentViewModel> appointmentList = new ArrayList();
-        try(PreparedStatement statement = DBManager.getConnection().prepareStatement(
-                "SELECT customer.customerName, " +
-                "appointment.appointmentid, appointment.description, appointment.start, appointment.title " +  ///TODO: fix this so type matches title or so help me
-                "FROM appointment " +
-                "JOIN customer ON customer.customerid = appointment.customerId");
+        try (PreparedStatement statement = DBManager.getConnection().prepareStatement(
+                "SELECT customer.customerName, "
+                + "appointment.appointmentid, appointment.description, appointment.start, appointment.title "
+                + ///TODO: fix this so type matches title or so help me
+                "FROM appointment "
+                + "JOIN customer ON customer.customerid = appointment.customerId");
                 ResultSet rs = statement.executeQuery();) {
             while (rs.next()) {
                 appointmentList.add(new AppointmentViewModel(
-                        rs.getString("customer.customerName"), 
-                        rs.getString("appointment.appointmentid"), 
-                        rs.getString("appointment.description"), 
-                        rs.getString("appointment.title"), 
+                        rs.getString("customer.customerName"),
+                        rs.getString("appointment.appointmentid"),
+                        rs.getString("appointment.description"),
+                        rs.getString("appointment.title"),
                         rs.getString("appointment.start")));
             }
-            
+
         } catch (SQLException e) {
             System.out.println("SQL cust query error: " + e.getMessage());
         } catch (Exception e2) {
@@ -188,6 +204,7 @@ public class MainController implements Initializable {
         }
         return appointmentList;
     }
+
     @FXML
     private void addAppointmentButtonPressed(ActionEvent event) {
         try {
@@ -214,23 +231,6 @@ public class MainController implements Initializable {
         window.setScene(tableViewScene);
         window.show();
     }
-
-//    @FXML
-//    private void deleteAppointmentButtonPressed(ActionEvent event) {
-//        AppointmentViewModel appointment = appointmentsTableView.getSelectionModel().getSelectedItem();
-//        if (appointment != null) {
-//            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//            alert.setTitle("Confirm Deletion");
-//            alert.setHeaderText("Are you sure you want to delete this appointment?");
-//            Optional<ButtonType> result = alert.showAndWait();
-//            if (result.get() == ButtonType.OK) {
-//                deleteAppointment(appointment);
-//            } else {
-//                alert.close();
-//            }
-//        }
-//    }
-
     @FXML
     private void addCustomerButtonPressed(ActionEvent event) {
         Parent tableViewParent = null;
@@ -247,19 +247,21 @@ public class MainController implements Initializable {
 
     @FXML
     private void updateCustomerButtonPressed(ActionEvent event) {
-        //TODO: Insert code that takes the selected value and retreieves is from the 
-        //database and fills out the textfields
+            try {
+                //TODO: Insert code that takes the selected value and retreieves is from the 
+                //database and fills out the textfields
 
-        Parent tableViewParent = null;
-        try {
-            tableViewParent = FXMLLoader.load(getClass().getResource("Customer.fxml"));
-        } catch (IOException e) {
-            return;
-        }
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = (Stage) root.getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Customer.fxml"));
+                Parent tableViewParent = loader.load();
+                Scene tableViewScene = new Scene(tableViewParent);
+                CustomerController controller = loader.getController();
+                controller.setCustomerDetails(customerTableView.getSelectionModel().getSelectedItem());
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(tableViewScene);
+                window.show();
+            } catch (IOException e) {
+                //fallthrough
+            }
     }
 
     @FXML
@@ -274,9 +276,9 @@ public class MainController implements Initializable {
             System.out.println("Appointments query failed: " + e.getMessage());
         }
     }
-    
+
     private void deleteAppointment(Appointment appointment) {
-        try{
+        try {
             PreparedStatement ps = DBManager.getConnection().prepareStatement("DELETE appointment.* FROM appointment WHERE appointment.appointmentId = ?");
             ps.setString(1, appointment.getAppointmentId());
             ps.executeUpdate();
@@ -284,7 +286,47 @@ public class MainController implements Initializable {
             System.out.println("Could not delete appointment. " + e.getMessage());
         }
     }
+
+    @FXML
+    private void reportsButtonPressed() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Reports Selection");
+        alert.setHeaderText("PLEASE CHOOSE A REPORT");
+
+        ButtonType buttonOne = new ButtonType("Uno");
+        ButtonType buttonTwo = new ButtonType("dos");
+        ButtonType buttonThree = new ButtonType("tres");
+        ButtonType buttonCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonOne, buttonTwo, buttonThree, buttonCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonOne) {
+            System.out.println("UNNNOOOOOO");
+        } else if (result.get() == buttonTwo) {
+            System.out.println("DOOOOOSSS");
+        } else if (result.get() == buttonThree) {
+            System.out.println("TRREEEEEFIDDDYY");
+        } else {
+            System.out.println("CANCELCANCELCANCEL");
+        }
+    }
     
+//    public boolean getDisableCustomerButtons() {
+//        return disableCustomerButtons.get();
+//    }
+//
+//    public BooleanProperty disableCustomerButtonsProperty() {
+//        return disableCustomerButtons;
+//    }
+//     public boolean getDisableAppointmentButtons() {
+//        return disableAppointmentButtons.get();
+//    }
+//
+//    public BooleanProperty disableAppointmentButtonsProperty() {
+//        return disableAppointmentButtons;
+//    }
+
 //    @FXML
 //    private void calRadioButtonToggle() throws IOException {
 //        if (this.calendarViewToggleGroup.getSelectedToggle().equals(this.weekViewRadio)) {
@@ -310,5 +352,4 @@ public class MainController implements Initializable {
 //            appointmentsTableView.setItems(filteredData);
 //        }
 //    }
-
 }

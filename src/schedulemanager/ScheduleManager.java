@@ -63,11 +63,24 @@ public class ScheduleManager extends Application {
     private AnchorPane rootLayout;
     
     //*************Changes the locale
+    
+    //TODO: an attempt was made. String and Locale do not mix.
+//    public String languageSelect(String language){
+//        Locale locale = new Locale(System.getProperty(language));
+//        if(locale.toString() == englishLocale){
+//            return englishLocale;
+//        }
+//        return frenchLocale;
+//    }
+//    
+//    ResourceBundle rb = ResourceBundle.getBundle(languageSelect(Locale.getDefault().toString()));
+    
     private String englishLocale = "resources/en_EN";
     private String frenchLocale = "resources/fr_FR";
     
     ResourceBundle rb = ResourceBundle.getBundle(englishLocale, Locale.getDefault());
 
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
