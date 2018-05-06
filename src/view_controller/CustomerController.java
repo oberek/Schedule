@@ -30,6 +30,7 @@ import util.DBManager;
 
 public class CustomerController implements Initializable {
 
+    DBManager dbManager;
     @FXML
     private AnchorPane root;
     @FXML
@@ -41,6 +42,10 @@ public class CustomerController implements Initializable {
     @FXML
     private TextField addressTextField;
     @FXML
+    private TextField cityTextField;
+    @FXML
+    private TextField countryTextField;
+    @FXML
     private TextField phoneTextField;
     @FXML
     private ComboBox locationComboBox;
@@ -51,6 +56,9 @@ public class CustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        dbManager = new DBManager();
+        btnSave.setOnAction(event -> saveButtonPressed(event));
+        btnCancel.setOnAction(event -> cancelButtonPressed(event));
         btnSave.setOnAction(this::saveButtonPressed);
         btnCancel.setOnAction(this::cancelButtonPressed);
         String query = "SELECT city.cityId, city.city, country.country FROM city JOIN country ON city.countryId = country.countryId ORDER BY country,city";
@@ -83,7 +91,7 @@ public class CustomerController implements Initializable {
         window.setScene(tableViewScene);
         window.show();
     }
-
+    
     private void saveButtonPressed(ActionEvent event) {
         String name = nameTextField.getText();
         String address = addressTextField.getText();
@@ -97,7 +105,7 @@ public class CustomerController implements Initializable {
                 //set customer details
                 //set in fields
                 PreparedStatement statement = DBManager.getConnection().prepareStatement("UPDATE address JOIN customer ON customer.addressId = address.addressid SET address = ?, cityId = ?, phone = ? WHERE customerId = ?");
-                //TODO setstatment to set columns for ?s execute 
+                //TODO setstatment to set columns for ?s execute
                 statement.setString(1, address);
                 statement.setInt(2, cityId);
                 statement.setString(3, phone);
@@ -107,10 +115,10 @@ public class CustomerController implements Initializable {
                     DBManager.getConnection().commit();
                 } catch(SQLException e){
                     DBManager.getConnection().rollback();
-                    System.out.println("SQL Commit failed: " + e.getMessage()); 
+                    System.out.println("SQL Commit failed: " + e.getMessage());
                     e.printStackTrace();
                 }
-                
+
             } catch (SQLException e) {
                 System.out.println("SQL cust query error: " + e.getMessage());
                 e.printStackTrace();
@@ -158,6 +166,8 @@ public class CustomerController implements Initializable {
             }
         }
         Parent tableViewParent = null;
+        System.out.println("NAME FIELD: " + nameTextField.getCharacters().toString());
+        boolean success = addToDatabase(nameTextField.getCharacters().toString(), addressTextField.getCharacters().toString(), cityTextField.getCharacters().toString(), countryTextField.getCharacters().toString(), phoneTextField.getCharacters().toString() );
         try {
             tableViewParent = FXMLLoader.load(getClass().getResource("Main.fxml"));
         } catch (IOException e) {
@@ -168,6 +178,23 @@ public class CustomerController implements Initializable {
         window.setScene(tableViewScene);
         window.show();
     }
+
+    private boolean addToDatabase(String name, String address, String city, String country, String phone) {
+        try {
+            dbManager.addToCustomers(name, address, city, country, phone);
+        } catch (SQLException e) {
+            System.out.println("SQL EXCEPTION: " + e);
+        }
+        return false;
+    }
+
+//    TODO: City cannot be converted to type String
+//    private void portCustomerInformation(Customer selectedCustomer) {
+//        nameTextField.setText(selectedCustomer.getCustomerName());
+//        addressTextField.setText(selectedCustomer.getAddress());
+//        cityTextField.setText(selectedCustomer.getCity());
+//        phoneTextField.setText(selectedCustomer.getPhone());
+//    }
 
     public void setCustomerDetails(Customer selectedCustomer) {
         isUpdate = true;

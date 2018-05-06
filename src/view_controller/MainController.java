@@ -124,7 +124,7 @@ public class MainController implements Initializable {
 
         btnAddCustomer.setOnAction(event -> addCustomerButtonPressed(event));
         btnUpdateCustomer.setOnAction(event -> updateCustomerButtonPressed(event));
-        btnDeleteCustomer.setOnAction(event -> deleteCustomerButtonPressed(event));
+        btnDeleteCustomer.setOnAction(event -> deleteCustomerButtonPressed(event, customerTableView));
         btnAddAppointment.setOnAction(event -> addAppointmentButtonPressed(event));
         btnUpdateAppointment.setOnAction(event -> updateAppointmentButtonPressed(event));
         btnReports.setOnAction(event -> {
@@ -138,7 +138,6 @@ public class MainController implements Initializable {
         monthRadio.setToggleGroup(calendarViewToggleGroup);
         weekRadio.setToggleGroup(calendarViewToggleGroup);
     }
-
 //    REQ B.  Provide the ability to add, update, and delete customer records in the database, including name, address, and phone number.
     //TODO: Fix null poiner exception
     private List<Customer> parseCustomerList() {
@@ -265,7 +264,9 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void deleteCustomerButtonPressed(ActionEvent event) {
+    private void deleteCustomerButtonPressed(ActionEvent event, TableView<Customer> customerTableView) {
+        // Get selected Customer
+//        Customer currentCustomer = (Customer) customerTableView.getItems().
     }
 
     private void populateAppointments() {
